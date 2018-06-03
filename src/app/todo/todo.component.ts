@@ -10,11 +10,21 @@ import { TodoService } from './shared/todo.service';
 export class TodoComponent implements OnInit {
 
   toDoListArray: any[];
+  user: string;
+  userSet: boolean;
 
-  constructor(private toDoService: TodoService) { }
+  constructor(private toDoService: TodoService) {
+    this.userSet = false;
+  }
 
   ngOnInit() {
-    this.toDoService.getToDoList().snapshotChanges()
+  }
+
+  getList(name) {
+    this.user = name.value;
+    name.value = null;
+    this.userSet = true;
+    this.toDoService.getToDoList(this.user).snapshotChanges()
     .subscribe(item => {
       this.toDoListArray = [];
       item.forEach(element => {
@@ -44,6 +54,12 @@ export class TodoComponent implements OnInit {
 
   deleteItem(key: string) {
     this.toDoService.removeItem(key);
+  }
+
+  logout() {
+    this.user = '';
+    this.userSet = false;
+    this.toDoListArray = [];
   }
 
 }
