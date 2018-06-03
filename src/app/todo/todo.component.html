@@ -2,22 +2,39 @@
   <h4 class="text-center">To-Do List</h4>
 </div>
 
-<div class="input-group">
-  <input type="text" class="form-control" placeholder="Enter task name" #itemTitle>
-  <button class="btn btn-primary" (click)="onAdd(itemTitle)">+</button>
+<div [hidden]="userSet" class="input-group">
+  <input type="text" class="form-control" placeholder="Enter your name" #username>
+  <button class="btn btn-primary" (click)="getList(username)">Enter</button>
 </div>
 
-<div style="margin-top: 5px">
-  <ul class="list-group">
-    <li class="list-group-item" *ngFor="let item of toDoListArray">
-      <span class="hover-cursor" (click)="swapCheck(item.$key, item.isChecked)">
-        <i class="far" style="color: blue" [ngClass]="item.isChecked ? 'fa-check-circle' : 'fa-circle'"></i>
-      </span>
-      <span [ngClass]="item.isChecked ? 'striked': 'not-striked'" id="title">{{item.title}}</span>
-      <span class="hover-cursor text-danger float-right" (click)="deleteItem(item.$key)">
-        <i class="fas fa-trash"></i>
-        <span style="margin-left: 5px">Delete</span>
-      </span>
-    </li>
-  </ul>
+<div [hidden]="!userSet">
+
+  <div class="mx-auto text-center" style="width: 100%">
+    <p class="lead">Welcome, {{user}}</p>
+  </div>
+
+  <div class="input-group">
+    <input type="text" class="form-control" placeholder="Enter task name" #itemTitle>
+    <button class="btn btn-primary" (click)="onAdd(itemTitle)">+</button>
+  </div>
+
+  <div style="margin-top: 5px">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let item of toDoListArray">
+        <span class="hover-cursor" (click)="swapCheck(item.$key, item.isChecked)">
+          <i class="far" style="color: blue" [ngClass]="item.isChecked ? 'fa-check-circle' : 'fa-circle'"></i>
+        </span>
+        <span [ngClass]="item.isChecked ? 'striked': 'not-striked'" id="title">{{item.title}}</span>
+        <span class="hover-cursor text-danger float-right" (click)="deleteItem(item.$key)">
+          <i class="fas fa-trash"></i>
+          <span style="margin-left: 5px">Delete</span>
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="mx-auto text-center" style="width: 200px; margin-top: 50px;">
+    <button class="btn btn-danger" (click)="logout()">Logout</button>
+  </div>
+
 </div>

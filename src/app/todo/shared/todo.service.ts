@@ -9,8 +9,8 @@ export class TodoService {
   toDoList: AngularFireList<any>;
   constructor(private firebasedb: AngularFireDatabase) { }
 
-  getToDoList() {
-    this.toDoList = this.firebasedb.list('titles');
+  getToDoList(user: string) {
+    this.toDoList = this.firebasedb.list(user);
     return this.toDoList;
   }
 
