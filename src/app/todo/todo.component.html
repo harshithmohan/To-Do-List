@@ -1,5 +1,5 @@
 <div class="jumbotron">
-  <h4 class="text-center">To-Do List</h4>
+    <h4 class="text-center">To-Do List</h4>
 </div>
 
 <div [hidden]="userSet" class="input-group">
@@ -21,19 +21,22 @@
   <div style="margin-top: 5px">
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let item of toDoListArray">
-        <span class="hover-cursor" (click)="swapCheck(item.$key, item.isChecked)">
+        <span class="hover-cursor" (click)="swapStarred(item.$key, item.isStarred)">
+          <i class="fa-star" style="color: gold" [ngClass]="item.isStarred ? 'fas' : 'far'"></i>
+        </span>
+        <span class="hover-cursor" style="margin-left: 10px" (click)="swapCheck(item.$key, item.isChecked)">
           <i class="far" style="color: blue" [ngClass]="item.isChecked ? 'fa-check-circle' : 'fa-circle'"></i>
         </span>
         <span [ngClass]="item.isChecked ? 'striked': 'not-striked'" id="title">{{item.title}}</span>
         <span class="hover-cursor text-danger float-right" (click)="deleteItem(item.$key)">
           <i class="fas fa-trash"></i>
-          <span style="margin-left: 5px">Delete</span>
+        <span style="margin-left: 5px">Delete</span>
         </span>
       </li>
     </ul>
   </div>
 
-  <div class="mx-auto text-center" style="width: 200px; margin-top: 50px;">
+  <div class="mx-auto text-center" style="width: 200px; margin-top: 30px;">
     <button class="btn btn-danger" (click)="logout()">Logout</button>
   </div>
 

@@ -34,6 +34,10 @@ export class TodoComponent implements OnInit {
       });
 
       this.toDoListArray.sort((a, b) => {
+        return b.isStarred - a.isStarred;
+      });
+
+      this.toDoListArray.sort((a, b) => {
         return a.isChecked - b.isChecked;
       });
     });
@@ -49,6 +53,14 @@ export class TodoComponent implements OnInit {
       this.toDoService.checkOrUncheckItem(key, false);
     } else {
       this.toDoService.checkOrUncheckItem(key, true);
+    }
+  }
+
+  swapStarred(key: string, isStarred: boolean) {
+    if (isStarred) {
+      this.toDoService.starOrUnstarItem(key, false);
+    } else {
+      this.toDoService.starOrUnstarItem(key, true);
     }
   }
 

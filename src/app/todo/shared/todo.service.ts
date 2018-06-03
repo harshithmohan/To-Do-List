@@ -17,12 +17,17 @@ export class TodoService {
   addItem(title: string) {
     this.toDoList.push({
       title: title,
-      isChecked: false
+      isChecked: false,
+      isStarred: false
     });
   }
 
   checkOrUncheckItem($key: string, flag: boolean) {
-    this.toDoList.update($key, { isChecked: flag});
+    this.toDoList.update($key, { isChecked: flag });
+  }
+
+  starOrUnstarItem($key: string, flag: boolean) {
+    this.toDoList.update($key, { isStarred: flag });
   }
 
   removeItem($key: string) {
