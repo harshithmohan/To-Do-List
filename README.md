@@ -1,4 +1,4 @@
-# ToDoList
+# To-do List
 
 ## Screenshots
 #### Desktop
