@@ -2,7 +2,7 @@
 
 ## Screenshots
 #### Desktop
-![alt text](https://i.imgur.com/pkg7lOl.png "Screenshot 1")
+![alt text](https://i.imgur.com/r5DtjKKl.png "Screenshot 1")
 
 #### Mobile
-![alt text](https://i.imgur.com/BIaeqhol.png "Screenshot 1")
+![alt text](https://i.imgur.com/ba2vHRWl.png "Screenshot 1")
