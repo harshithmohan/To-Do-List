@@ -21,31 +21,39 @@ export class TodoComponent implements OnInit {
   }
 
   getList(name) {
-    this.user = name.value;
-    name.value = null;
-    this.userSet = true;
-    this.toDoService.getToDoList(this.user).snapshotChanges()
-    .subscribe(item => {
-      this.toDoListArray = [];
-      item.forEach(element => {
-        const x = element.payload.toJSON();
-        x['$key'] = element.key;
-        this.toDoListArray.push(x);
-      });
+    this.user = name.value.trim();
+    if (this.user.length > 0) {
+      name.value = null;
+      this.userSet = true;
+      this.toDoService.getToDoList(this.user).snapshotChanges()
+      .subscribe(item => {
+        this.toDoListArray = [];
+        item.forEach(element => {
+          const x = element.payload.toJSON();
+          x['$key'] = element.key;
+          this.toDoListArray.push(x);
+        });
 
-      this.toDoListArray.sort((a, b) => {
-        return b.isStarred - a.isStarred;
-      });
+        this.toDoListArray.sort((a, b) => {
+          return b.isStarred - a.isStarred;
+        });
 
-      this.toDoListArray.sort((a, b) => {
-        return a.isChecked - b.isChecked;
+        this.toDoListArray.sort((a, b) => {
+          return a.isChecked - b.isChecked;
+        });
       });
-    });
+    } else {
+      window.alert('Enter a valid name');
+    }
   }
 
   onAdd(item) {
-    this.toDoService.addItem(item.value);
-    item.value = null;
+    if (item.value.trim().length > 0) {
+      this.toDoService.addItem(item.value.trim());
+      item.value = null;
+    } else {
+      window.alert('Enter a valid title');
+    }
   }
 
   swapCheck(key: string, isChecked: boolean) {
