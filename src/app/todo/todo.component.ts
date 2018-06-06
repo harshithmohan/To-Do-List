@@ -10,22 +10,27 @@ import { TodoService } from './shared/todo.service';
 export class TodoComponent implements OnInit {
 
   toDoListArray: any[];
-  user: string;
   userSet: boolean;
+  userData: any;
 
   constructor(private toDoService: TodoService) {
     this.userSet = false;
+    this.userData = {
+      name: '',
+      total: 0,
+      completed: 0
+    };
   }
 
   ngOnInit() {
   }
 
   getList(name) {
-    this.user = name.value.trim();
-    if (this.user.length > 0) {
+    this.userData.name = name.value.trim();
+    if (this.userData.name.length > 0) {
       name.value = null;
       this.userSet = true;
-      this.toDoService.getToDoList(this.user).snapshotChanges()
+      this.toDoService.getToDoList(this.userData.name).snapshotChanges()
       .subscribe(item => {
         this.toDoListArray = [];
         item.forEach(element => {
@@ -33,7 +38,6 @@ export class TodoComponent implements OnInit {
           x['$key'] = element.key;
           this.toDoListArray.push(x);
         });
-
         this.toDoListArray.sort((a, b) => {
           return b.isStarred - a.isStarred;
         });
@@ -41,10 +45,24 @@ export class TodoComponent implements OnInit {
         this.toDoListArray.sort((a, b) => {
           return a.isChecked - b.isChecked;
         });
+
+        this.getUserDetails();
       });
     } else {
       window.alert('Enter a valid name');
     }
+  }
+
+  getUserDetails() {
+    let total = 0, completed = 0;
+    this.toDoListArray.forEach(item => {
+      total++;
+      if (item.isChecked) {
+        completed++;
+      }
+    });
+    this.userData.total = total;
+    this.userData.completed = completed;
   }
 
   onAdd(item) {
@@ -77,7 +95,7 @@ export class TodoComponent implements OnInit {
   }
 
   logout() {
-    this.user = '';
+    this.userData.name = '';
     this.userSet = false;
     this.toDoListArray = [];
   }

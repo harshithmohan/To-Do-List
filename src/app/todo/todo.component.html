@@ -1,19 +1,24 @@
 <div class="jumbotron">
-    <h4 class="text-center">To-do List</h4>
+    <h4 class="text-center" id="heading">To-do List</h4>
 </div>
 
-<div [hidden]="userSet" class="input-group">
+<div *ngIf="!userSet" class="input-group">
   <input type="text" class="form-control" placeholder="Enter your name" (keyup.enter)="getList(username)" #username>
   <button class="btn btn-primary" (click)="getList(username)">Enter</button>
 </div>
 
-<div [hidden]="!userSet">
+<div *ngIf="userSet">
 
-  <div class="mx-auto text-center" style="width: 100%; margin-top: -10px">
-    <p class="lead">Welcome, {{user}}</p>
+  <div class="mx-auto text-center" style="width: 100%; margin-top: -10px" id="top">
+    <p class="lead" style="font-weight: bold">Welcome {{userData.name}}, you have {{userData.total-userData.completed}} tasks remaining.</p>
   </div>
 
-  <div class="input-group">
+  <div class="mx-auto text-center" style="width: 100%; margin-top: -10px; margin-left: 10px; font-size: 20px">
+    <span>Total tasks: {{userData.total}}</span>
+    <span style="margin-left: 20px">Completed tasks: {{userData.completed}}</span>
+  </div>
+
+  <div class="input-group" style="margin-top: 15px">
     <input type="text" class="form-control" placeholder="Enter task name" (keyup.enter)="onAdd(itemTitle)" #itemTitle>
     <button class="btn btn-primary" (click)="onAdd(itemTitle)">+</button>
   </div>

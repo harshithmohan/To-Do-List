@@ -5,3 +5,11 @@
 #title {
     margin-left: 10px;
 }
+
+* {
+    font-family: 'Courgette';    
+}
+
+#heading {
+    font-size: 40px;
+}

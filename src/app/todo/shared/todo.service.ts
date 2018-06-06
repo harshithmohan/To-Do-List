@@ -6,16 +6,16 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 })
 export class TodoService {
 
-  toDoList: AngularFireList<any>;
+  taskList: AngularFireList<any>;
   constructor(private firebasedb: AngularFireDatabase) { }
 
   getToDoList(user: string) {
-    this.toDoList = this.firebasedb.list(user);
-    return this.toDoList;
+    this.taskList = this.firebasedb.list('users/' + user + '/tasks');
+    return this.taskList;
   }
 
   addItem(title: string) {
-    this.toDoList.push({
+    this.taskList.push({
       title: title,
       isChecked: false,
       isStarred: false
@@ -23,15 +23,15 @@ export class TodoService {
   }
 
   checkOrUncheckItem($key: string, flag: boolean) {
-    this.toDoList.update($key, { isChecked: flag });
+    this.taskList.update($key, { isChecked: flag });
   }
 
   starOrUnstarItem($key: string, flag: boolean) {
-    this.toDoList.update($key, { isStarred: flag });
+    this.taskList.update($key, { isStarred: flag });
   }
 
   removeItem($key: string) {
-    this.toDoList.remove($key);
+    this.taskList.remove($key);
   }
 
 }
