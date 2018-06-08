@@ -1,37 +1,43 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+
+interface Task {
+  title: string;
+  isChecked: boolean;
+  isStarred: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
 
-  taskList: AngularFireList<any>;
-  constructor(private firebasedb: AngularFireDatabase) { }
+  taskCollection: AngularFirestoreCollection<Task>;
+  constructor(private afs: AngularFirestore) { }
 
-  getToDoList(user: string) {
-    this.taskList = this.firebasedb.list('users/' + user + '/tasks');
-    return this.taskList;
+  getTaskCollection(user: string) {
+    this.taskCollection = this.afs.collection<Task>('users/' + user + '/tasks');
+    return this.taskCollection;
   }
 
-  addItem(title: string) {
-    this.taskList.push({
+  addTask(title: string) {
+    this.taskCollection.add({
       title: title,
       isChecked: false,
       isStarred: false
     });
   }
 
-  checkOrUncheckItem($key: string, flag: boolean) {
-    this.taskList.update($key, { isChecked: flag });
+  checkOrUncheckTask($key: string, flag: boolean) {
+    this.taskCollection.doc($key).update({ isChecked: flag });
   }
 
-  starOrUnstarItem($key: string, flag: boolean) {
-    this.taskList.update($key, { isStarred: flag });
+  starOrUnstarTask($key: string, flag: boolean) {
+    this.taskCollection.doc($key).update({ isStarred: flag });
   }
 
-  removeItem($key: string) {
-    this.taskList.remove($key);
+  removeTask($key: string) {
+    this.taskCollection.doc($key).delete();
   }
 
 }
