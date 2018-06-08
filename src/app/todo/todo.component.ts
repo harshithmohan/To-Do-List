@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from './shared/todo.service';
 
+interface UserData {
+  name: string;
+  total: number;
+  completed: number;
+}
+
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
@@ -11,7 +17,7 @@ export class TodoComponent implements OnInit {
 
   toDoListArray: any[];
   userSet: boolean;
-  userData: any;
+  userData: UserData;
 
   constructor(private toDoService: TodoService) {
     this.userSet = false;
@@ -25,19 +31,20 @@ export class TodoComponent implements OnInit {
   ngOnInit() {
   }
 
-  getList(name) {
+  getCollection(name) {
     this.userData.name = name.value.trim();
     if (this.userData.name.length > 0) {
       name.value = null;
       this.userSet = true;
-      this.toDoService.getToDoList(this.userData.name).snapshotChanges()
+      this.toDoService.getTaskCollection(this.userData.name).snapshotChanges()
       .subscribe(item => {
         this.toDoListArray = [];
         item.forEach(element => {
-          const x = element.payload.toJSON();
-          x['$key'] = element.key;
-          this.toDoListArray.push(x);
+          const data = element.payload.doc.data();
+          data['$key'] = element.payload.doc.id;
+          this.toDoListArray.push(data);
         });
+
         this.toDoListArray.sort((a, b) => {
           return b.isStarred - a.isStarred;
         });
@@ -46,14 +53,14 @@ export class TodoComponent implements OnInit {
           return a.isChecked - b.isChecked;
         });
 
-        this.getUserDetails();
+        this.getDetails();
       });
     } else {
       window.alert('Enter a valid name');
     }
   }
 
-  getUserDetails() {
+  getDetails() {
     let total = 0, completed = 0;
     this.toDoListArray.forEach(item => {
       total++;
@@ -67,7 +74,7 @@ export class TodoComponent implements OnInit {
 
   onAdd(item) {
     if (item.value.trim().length > 0) {
-      this.toDoService.addItem(item.value.trim());
+      this.toDoService.addTask(item.value.trim());
       item.value = null;
     } else {
       window.alert('Enter a valid title');
@@ -75,23 +82,15 @@ export class TodoComponent implements OnInit {
   }
 
   swapCheck(key: string, isChecked: boolean) {
-    if (isChecked) {
-      this.toDoService.checkOrUncheckItem(key, false);
-    } else {
-      this.toDoService.checkOrUncheckItem(key, true);
-    }
+    this.toDoService.checkOrUncheckTask(key, !isChecked);
   }
 
   swapStarred(key: string, isStarred: boolean) {
-    if (isStarred) {
-      this.toDoService.starOrUnstarItem(key, false);
-    } else {
-      this.toDoService.starOrUnstarItem(key, true);
-    }
+    this.toDoService.starOrUnstarTask(key, !isStarred);
   }
 
   deleteItem(key: string) {
-    this.toDoService.removeItem(key);
+    this.toDoService.removeTask(key);
   }
 
   logout() {

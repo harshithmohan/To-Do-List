@@ -3,8 +3,8 @@
 </div>
 
 <div *ngIf="!userSet" class="input-group">
-  <input type="text" class="form-control" placeholder="Enter your name" (keyup.enter)="getList(username)" #username>
-  <button class="btn btn-primary" (click)="getList(username)">Enter</button>
+  <input type="text" class="form-control" placeholder="Enter your name" (keyup.enter)="getCollection(username)" #username>
+  <button class="btn btn-primary" (click)="getCollection(username)">Enter</button>
 </div>
 
 <div *ngIf="userSet">
